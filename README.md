@@ -1,383 +1,360 @@
-FCFS
-  #include<stdio.h>
-int main()
+    Add two matrice
+    package Programs;
+import java.util.Scanner;
+public class MatrixA {
+public static void main (String[] args)
 {
-int bt[20], wt[20], tat[20],i, n; float wtavg, tatavg;
-printf("\nEnter the number of processes -- ");
-scanf("%d", &n);
-for(i=0;i<n;i++)
+// TODO Auto-generated method stub
+int n = Integer.parseInt (args[0]);
+int i,j;
+int[ ][ ] matrix1 = new int[n][n];
+int[ ][ ] matrix2 = new int[n][n];
+int[ ][ ] sum = new int[n][n];
+Scanner sc=new Scanner(System.in);
+// Initialize matrices with some values, for example, i+j
+System.out.println("Enter the elements in the matrix1:");
+for ( i = 0; i < n; i++)
 {
-printf("\nEnter Burst Time for Process %d -- ", i);
-scanf("%d", &bt[i]);
+for (j = 0; j < n; j++)
+{
+matrix1[i][j] = sc.nextInt();
 }
-wt[0] = wtavg = 0;
-tat[0] = tatavg = bt[0];
-for(i=1;i<n;i++)
-{
-wt[i] = wt[i-1] +bt[i-1];
-tat[i] = tat[i-1] +bt[i];
-wtavg = wtavg + wt[i];
-tatavg = tatavg + tat[i];
 }
-printf("\t PROCESS \tBURST TIME \t WAITING TIME\t TURNAROUND TIME\n");
-for(i=0;i<n;i++)
-printf("\n\t P%d \t\t %d \t\t %d \t\t %d", i, bt[i], wt[i], tat[i]);
-printf("\nAverage Waiting Time -- %f", wtavg/n);
-printf("\nAverage Turnaround Time -- %f", tatavg/n);
-}
-
-
-
-2) sjf
-   #include<stdio.h>
-int main()
+System.out.println("Enter the elements in the matrix2:");
+for (i = 0; i < n; i++)
 {
-int p[20], bt[20], wt[20], tat[20], i, k, n, temp;
-float wtavg, tatavg;
-printf("\nEnter the number of processes -- ");
-scanf("%d", &n);
-for(i=0;i<n;i++)
+for (j = 0; j < n; j++)
 {
-p[i]=i;
-printf("Enter Burst Time for Process %d -- ", i);
-scanf("%d", &bt[i]);
+matrix2[i][j] = sc.nextInt();
 }
-for(i=0;i<n;i++)
-for(k=i+1;k<n;k++)
-if(bt[i]>bt[k])
+}
+// Add the matrices
+for (i = 0; i < n; i++)
 {
-temp=bt[i];
-bt[i]=bt[k];
-bt[k]=temp;
-temp=p[i];
-p[i]=p[k];
-p[k]=temp;
-}
-wt[0] = wtavg = 0;
-tat[0] = tatavg = bt[0];
-for(i=1;i<n;i++)
+for (j = 0; j < n; j++)
 {
-wt[i] = wt[i-1] +bt[i-1];
-tat[i] = tat[i-1] +bt[i];
-wtavg = wtavg + wt[i];
-tatavg = tatavg + tat[i];
+sum[i][j] = matrix1[i][j] + matrix2[i][j];
 }
-printf("\n\t PROCESS \tBURST TIME \t WAITING TIME\t TURNAROUND TIME\n");
-for(i=0;i<n;i++)
-printf("\n\t P%d \t\t %d \t\t %d \t\t %d", p[i], bt[i], wt[i], tat[i]);
-printf("\nAverage Waiting Time -- %f", wtavg/n);
-printf("\nAverage Turnaround Time -- %f", tatavg/n);
 }
-
-
-3) Round Robin
-   #include<stdio.h>
-int main()
+// Print the result
+System.out.println("Sum of matrices is: ");
+for ( i = 0; i < n; i++)
 {
-int i,j,n,bu[10],wa[10],tat[10],t,ct[10],max;
-float awt=0,att=0,temp=0;
-printf("Enter the no of processes -- ");
-scanf("%d",&n);
-for(i=0;i<n;i++)
+for ( j = 0; j < n; j++)
 {
-printf("\nEnter Burst Time for process %d -- ", i+1);
-scanf("%d",&bu[i]);
-ct[i]=bu[i];
+System.out.print(" " +sum[i][j] );
 }
-printf("\nEnter the size of time slice -- ");
-scanf("%d",&t);
-max=bu[0];
-for(i=1;i<n;i++)
-if(max<bu[i]) max=bu[i];
-for(j=0;j<(max/t)+1;j++)
-for(i=0;i<n;i++)
-if(bu[i]!=0)
-if(bu[i]<=t)
-{
-tat[i]=temp+bu[i];
-temp=temp+bu[i];
-bu[i]=0;
+System.out.println();
 }
-else
-{
-bu[i]=bu[i]-t;
-temp=temp+t;
 }
-for(i=0;i<n;i++)
-{
-wa[i]=tat[i]-
-ct[i];
-att+=tat[i];
-awt+=wa[i];
-}
-printf("\nThe Average Turnaround time is -- %f",att/n);
-printf("\nThe Average Waiting time is -- %f ",awt/n);
-printf("\n\tPROCESS\t BURST TIME \t WAITING TIME\tTURNAROUND TIME\n");
-for(i=0;i<n;i++)
-printf("\t%d \t %d \t\t %d \t\t %d \n",i+1,ct[i],wa[i],tat[i]);
 }
 
 
 
 
-4)  Priority
-   #include<stdio.h>
-int main()
-{
-int p[20],bt[20],pri[20], wt[20],tat[20],i, k, n, temp;
-float wtavg, tatavg;
-printf("Enter the number of processes --- ");
-scanf("%d",&n);
-for(i=0;i<n;i++)
-{
-p[i] = i;
-printf("Enter only positive numbers\n");
-printf("Enter the Burst Time & Priority of Process %d ---
-scanf("%d %d",&bt[i], &pri[i]);
-}
-for(i=0;i<n;i++)
-for(k=i+1;k<n;k++)
-if(pri[i] > pri[k])
-{
-temp=p[i];
-p[i]=p[k];
-p[k]=temp;
-temp=bt[i];
-bt[i]=bt[k];
-bt[k]=temp;
-temp=pri[i];
-pri[i]=pri[k];
-pri[k]=temp;
-}
-wtavg = wt[0] = 0;
-tatavg = tat[0] = bt[0];
-for(i=1;i<n;i++)
-{
-wt[i] = wt[i-1] + bt[i-1];
-tat[i] = tat[i-1] + bt[i];
-wtavg = wtavg + wt[i];
-tatavg = tatavg + tat[i];
-}
-printf("\nPROCESS\t\tPRIORITY\tBURST TIME\tWAITING TIME\tTURNAROUND TIME");
-for(i=0;i<n;i++)
-printf("\n%d \t\t %d \t\t %d \t\t %d \t\t %d ",p[i],pri[i],bt[i],wt[i],tat[i]);
-printf("\nAverage Waiting Time is --- %f",wtavg/n);
-printf("\nAverage Turnaround Time is --- %f",tatavg/n);
-}
+      Develop a stack
 
 
-
-
-//Producer Consumer
-
-#include<stdio.h>
-#include <stdlib.h>
-int mutex = 1;
-int full = 0;
-int empty = 3, x = 0;
-void producer()
-{
---mutex;
-++full;
---
-empty;
-x++;
-printf("\nProducer produces item %d",x);
-++mutex;
+      package Programs;
+import java.util.Scanner;
+class Stack {
+private int[] elements;
+private int top;
+public Stack() {
+elements = new int[10];
+top = -1;
+public boolean isEmpty() {
+return top == -1;
+public boolean isFull() {
+return top == 9;
 }
-void consumer()
-{
---mutex;
---full;
-++empty;
-printf("\nConsumer consumes item %d",x);
-x--;
-++mutex;
 }
-int main()
-{
-int n, i;
-printf("\n1. Press 1 for Producer" "\n2. Press 2 for Consumer" "\n3. Press 3 for Exit");
-for (i=1;i>0;i++)
-{
-printf("\nEnter your choice:");
-scanf("%d", &n);
-// Switch Cases
-switch (n)
-{
-case 1:
-if ((mutex == 1) && (empty != 0))
-{
-producer();
 }
-else
-{
-printf("Buffer is full!");
+public void push(int element) {
+if (isFull()) {
+System.out.println("Stack is full. Cannot push more elements.");
+} else {
+elements[++top] = element;
+System.out.println("Pushed: " + element);
 }
+}
+public void pop() {
+if (isEmpty()) {
+System.out.println("Stack is empty. Cannot pop elements.");
+} else {
+int poppedElement = elements[top--];
+System.out.println("Popped: " + poppedElement);
+}
+}
+public void printStack() {
+BCS306A ORIENTED PROGRAMMING WITH JAVA
+if (isEmpty()) {
+System.out.println("Stack is empty.");
+} else {
+System.out.print("Stack: ");
+for (int i = 0; i <= top; i++) {
+System.out.print(elements[i] + " ");
+}
+System.out.println();
+}
+}
+}
+public class Main {
+public static void main(String[] args) {
+Stack stack = new Stack();
+while(true)
+{
+System.out.println("Stack Operations");
+System.out.println("1. Push");
+System.out.println("2. Pop");
+System.out.println("3. Display");
+System.out.println("4. Exit");
+Scanner sc = new Scanner(System.in);
+System.out.print("Enter your Choice: ");
+int choice = sc.nextInt();
+switch(choice)
+{
+case 1: System.out.println("Enter Number to push: ");
+int num = sc.nextInt();
+stack.push(num);
 break;
+stack.pop();
+break;
+case 3: stack.printStack();
+break;
+case 4: System.exit(0);
+break;
+default: System.out.println("Invalid choice ");
 case 2:
-if ((mutex == 1)&& (full != 0))
-{
-consumer();
 }
-else
-{
-printf("Buffer is empty!");
 }
-break;
-case 3:
-exit(0);
-break;
 }
+}
+
+           Employee 
+package Programs;
+import java.util.Scanner;
+public class Employee {
+private int empId;
+private String name;
+private double salary;
+public Employee(int empId, String name, double salary) {
+this.empId = empId;
+this.name = name;
+this.salary = salary;
+}
+public void raiseSalary(double percentage) {
+if (percentage > 0) {
+double raiseAmount = salary * (percentage / 100);
+salary += raiseAmount;
+}
+}
+public void displayInfo() {
+System.out.println("Employee ID: " + empId);
+System.out.println("Name: " + name);
+System.out.println("Salary: Rs." + String.format("%.2f", salary));
+}
+public static void main(String[] args) {
+// Creating an Employee object
+Employee emp = new Employee(1, "Dr. STHIRA", 50000.0);
+Scanner scanner = new Scanner(System.in);
+BCS306A // Displaying employee information before raise
+System.out.println("Employee information before raise:");
+emp.displayInfo();
+System.out.println("Enter the percentage of salary to raise:");
+int percentage = scanner.nextInt();
+// Raising salary by 10%
+emp.raiseSalary(percentage);
+// Displaying employee information after raise
+System.out.println("\nEmployee information after raise:");
+emp.displayInfo();
 }
 }
 
 
 
-WRITER AND READER PROCESS
+               MyPoint
+package Programs;
+public class MyPoint {
+private int x;
+private int y;
+// Default constructor
+public MyPoint() {
+this.x = 0;
+this.y = 0;
+}
+// Overloaded constructor
+public MyPoint(int x, int y) {
+this.x = x;
+this.y = y;
+}
+// Setters for x and y
+public void setXY(int x, int y) {
+this.x = x;
+this.y = y;
+}
+// Getter for x and y
+public int[] getXY() {
+int[] coordinates = {x, y};
+return coordinates;
+}
+// Returns the string description of the instance in the format "(x, y)"
+@Override
+public String toString() {
+return "(" + x + ", " + y + ")";
+}
+// Calculates distance from this point to another point (x, y)
+public double distance(int x, int y) {
+int xDiff = this.x - x;
+int yDiff = this.y - y;
+return Math.sqrt(xDiff * xDiff + yDiff * yDiff);
+}
+// Calculates distance from this point to another MyPoint instance
+public double distance(MyPoint another) {
+int xDiff = this.x - another.x;
+int yDiff = this.y - another.y;
+return Math.sqrt(xDiff * xDiff + yDiff * yDiff);
+// Calculates distance from this point to the origin (0, 0)
+public double distance() {
+return Math.sqrt(x * x + y * y);
+}
+}
+public static void main(String[] args) {
+MyPoint point1 = new MyPoint(); // Default constructor (0,0)
+System.out.println("Point 1: " + point1);
+MyPoint point2 = new MyPoint(3,4); // Overloaded constructor (3,4)
+System.out.println("Point 2: " + point2);
+point1.setXY(1,2);//9 Set coordinates using setXY() method
+System.out.println("Point 1 after setXY(): " + point1);
+int[] coordinates = point2.getXY(); // Get coordinates using getXY() method
+System.out.println("Point 2 coordinates: (" + coordinates[0] + ", " + coordinates[1] +")")
+System.out.println("Distance between Point 1 and (1,2): " + point1.distance(1,2));
+System.out.println("Distance between Point 1 and Point 2: " + point1.distance(point2));
+System.out.println("Distance from Point 2 to origin: " + point1.distance());
+}
+}
 
 
-#include <stdio.h>
-#include <fcntl.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <unistd.h>
-int main()
-{
-int fd;
-char buf[1024]="Hello BIT";
-char * myfifo = "/ise/Desktop/tmp";
-mkfifo(myfifo, 0666);
-printf("Run Reader process to read the FIFO File\n");
-fd = open(myfifo, O_WRONLY);
-write(fd,buf,sizeof(buf));
-close(fd);
-unlink(myfifo); /* remove the FIFO */
-return 0;
+              CREATE A SHAPE 
+package Programs;
+//Shape class (Superclass)
+class Shape {
+public void draw() {
+System.out.println("Drawing a shape");
 }
-
-#include <fcntl.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include <stdio.h>
-#define MAX_BUF 1024
-int main()
-{
-int fd;
-char *myfifo = "/ise /Desktop/tmp";
-char buf[MAX_BUF];
-fd = open(myfifo, O_RDONLY);
-read(fd, buf, MAX_BUF);
-printf("Reader process has read : %s\n", buf);
-close(fd);
-return 0;
-}
-
-
-
-
-BANK ALGORITHM
-
-#include<stdio.h>
-struct file
-{
-int all[10];
-int max[10];
-int need[10];
-int flag;
-};
-void main()
-{
-struct file f[10];
-int fl;
-int i, j, k, p, b, n, r, g, cnt=0, id, newr;
-int avail[10],seq[10];
-printf("Enter number of processes -- ");
-scanf("%d",&n);
-printf("Enter number of resources -- ");
-scanf("%d",&r);
-for(i=0;i<n;i++)
-{
-printf("Enter details for P%d",i);
-printf("\nEnter allocation\t -- \t");
-for(j=0;j<r;j++)
-scanf("%d",&f[i].all[j]);
-printf("Enter Max\t\t -- \t");
-for(j=0;j<r;j++)
-scanf("%d",&f[i].max[j]);
-f[i].flag=0;
-}
-printf("\nEnter Available Resources\t -- \t");
-for(i=0;i<r;i++)
-scanf("%d",&avail[i]);
-for(i=0;i<n;i++)
-{
-for(j=0;j<r;j++)
-{
-f[i].need[j]=f[i].max[j]-
-f[i].all[j]; if(f[i].need[j]<0)
-f[i].need[j]=0;
+public void erase() {
+System.out.println("Erasing a shape");
 }
 }
-cnt=0;
-fl=0;
-while(cnt!=n)
-{
-g=0;
-for(j=0;j<n;j++)
-{
-if(f[j].flag==0)
-{
-b=0;
-for(p=0;p<r;p++)
-{
-if(avail[p]>=f[j].need[p]) b=b+1;
-else
-b=b-1;
+//Circle class (Subclass)
+class Circle extends Shape {
+@Override
+public void draw() {
+System.out.println("Drawing a circle");
 }
-if(b==r)
-{
-printf("\nP%d is visited",j);
-seq[fl++]=j;
-f[j].flag=1;
-for(k=0;k<r;k++)
-avail[k]=avail[k]+f[j].all[k];
-cnt=cnt+1;
-printf("(");
-for(k=0;k<r;k++)
-printf("%3d",avail[k]);
-printf(")");
-g=1;
+@Override
+public void erase() {
+System.out.println("Erasing a circle");
 }
 }
+//Triangle class (Subclass)
+class Triangle extends Shape {
+@Override
+public void draw() {
+System.out.println("Drawing a triangle");
 }
-if(g==0)
-{
-printf("\n REQUEST NOT GRANTED -- DEADLOCK OCCURRED");
-printf("\n SYSTEM IS IN UNSAFE STATE");
-goto y;
+@Override
+public void erase() {
+System.out.println("Erasing a triangle");
 }
 }
-printf("\nSYSTEM IS IN SAFE STATE");
-printf("\nThe Safe Sequence is -- (");
-for(i=0;i<fl;i++)
-printf("P%d ",seq[i]);
-printf(")");
-y: printf("\nProcess\t\tAllocation\t\tMax\t\t\tNeed\n");
-for(i=0;i<n;i++)
-{
-printf("P%d\t",i);
-for(j=0;j<r;j++)
-printf("%6d",f[i].all[j]);
-for(j=0;j<r;j++)
-printf("%6d",f[i].max[j]);
-for(j=0;j<r;j++)
-printf("%6d",f[i].need[j]);
-printf("\n");
+System.out.println("Drawing a square");
+}
+@Override
+public void erase() {
+System.out.println("Erasing a square");
+}
+}
+//Main class
+public class Main {
+public static void main(String[] args) {
+// Polymorphism: Creating objects of different subclasses using the reference of the superclass
+Shape shape1 = new Circle();
+Shape shape2 = new Triangle();
+Shape shape3 = new Square();
+// Demonstrating polymorphic behavior
+shape1.draw(); // Calls draw() method of Circle class
+shape1.erase(); // Calls erase() method of Circle class
+shape2.draw(); // Calls draw() method of Triangle class
+shape2.erase(); // Calls erase() method of Triangle class
+shape3.draw(); // Calls draw() method of Square class
+shape3.erase(); // Calls erase() method of Square class
 }
 }
 
 
 
+         abstract class Shape
 
+package Programs;
+// Abstract Shape class
+abstract class Shape {
+// Abstract methods to calculate area and perimeter
+abstract double calculateArea();
+abstract double calculatePerimeter();
+}
+// Circle class extending Shape
+class Circle extends Shape {
+private double radius;
+// Constructor for Circle class
+public Circle(double radius) {
+this.radius = radius;
+}
+// Implementation of abstract method to calculate area for Circle
+@Override
+double calculateArea() {
+return Math.PI * radius * radius;
+}
+// Implementation of abstract method to calculate perimeter (circumference) for Circle
+@Override
+double calculatePerimeter() {
+return 2 * Math.PI * radius;
+}
+}
+// Triangle class extending Shape
+class Triangle extends Shape {
+private double side1;
+private double side2;
+private double side3;
+// Constructor for Triangle class
+public Triangle(double side1, double side2, double side3) {
+this.side1 = side1;
+this.side2 = side2;
+this.side3 = side3;
+}
+// Implementation of abstract method to calculate area for Triangle using Heron's formula
+@Override
+double calculateArea() {
+double s = (side1 + side2 + side3) / 2;
+return Math.sqrt(s * (s - side1) * (s - side2) * (s - side3));
+}
+// Implementation of abstract method to calculate perimeter for Triangle
+@Override
+double calculatePerimeter() {
+return side1 + side2 + side3;
+}
+}
+// Main class
+public class Main {
+public static void main(String[] args) {
+// Creating Circle and Triangle objects
+Circle circle = new Circle(5);
+Triangle triangle = new Triangle(3, 4, 5);
+// Calculating and displaying area and perimeter for Circle
+System.out.println("Circle - Area: " + circle.calculateArea() + ", circle.calculatePerimeter());
+Perimeter: " +
+// Calculating and displaying area and perimeter for Triangle
+System.out.println("Triangle - Area: " + triangle.calculateArea() + ", Perimeter: " +
+triangle.calculatePerimeter());
+}
+}
